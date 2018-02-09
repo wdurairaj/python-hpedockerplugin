@@ -162,7 +162,7 @@ if node_id not in vol[volume_id]['path_info']:
        path_info_host['mount_dir'] = 
        path_info_host['mount_ids'].append(mount_id)
        
-       path_info[host_name] = path_info_host
+       path_info[node_id] = path_info_host
        
        self._etcd.update_vol(volid, 'path_info', json.dumps(path_info))
        
@@ -178,7 +178,7 @@ if node_id not in vol[volume_id]['path_info']:
          path_info_host['mount_dir'] = 
          path_info_host['mount_ids'].append(mount_id)
 
-         path_info[host_name] = path_info_host
+         path_info[node_id] = path_info_host
          self._etcd.update_vol(volid, 'path_info', json.dumps(path_info))
 
 ```
@@ -208,7 +208,7 @@ else:
 
 ### Questions
 
-1) How do we derive the node_id of a docker host ?
+1) How do we derive the node_id of a docker host ? (or) can we use the plain host name on which the docker engine is running ?
 2) Under what circumstances does the case 5) as mentioned in [fencing.md](https://github.hpe.com/container-provider/design-guide/blob/master/doc/fencing.md#plugin-requirements) 
    will arise ?
 3) Will the "mountConflictDelay" parameter be supplied as part of each docker volume creation like

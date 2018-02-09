@@ -143,7 +143,7 @@ if node_id not in vol[volume_id]['path_info']:
       // clean the LUN entries on 3PAR Array forcefully for node_id
       // which already has this volume mounted
       # Please note: there is no direct way to forcefully remove the
-      # LUN from the 3PAR Array. We might need to use 
+      # LUN from the 3PAR Array via REST. We might need to use 
       # CLI call : removevlun -f <volume> <nsp> <lun_id> kind of 
       #            operation via SSH.
       
@@ -162,6 +162,8 @@ if node_id not in vol[volume_id]['path_info']:
        path_info_host['mount_dir'] = 
        path_info_host['mount_ids'].append(mount_id)
        
+       path_info[host_name] = path_info_host
+       
        self._etcd.update_vol(volid, 'path_info', json.dumps(path_info))
        
    else:
@@ -176,6 +178,7 @@ if node_id not in vol[volume_id]['path_info']:
          path_info_host['mount_dir'] = 
          path_info_host['mount_ids'].append(mount_id)
 
+         path_info[host_name] = path_info_host
          self._etcd.update_vol(volid, 'path_info', json.dumps(path_info))
 
 ```
@@ -192,6 +195,9 @@ if node_id in vol[volume_id]['path_info']:
    if len(path_info_host['mount_ids'][node_id]) == 0:
         // PROCEED WITH NORMAL UNMOUNT
    else:
+      // Don't proceed with Normal unmount flow, 
+      // since some references to this volume is available
+      // by other containers on the same node.
       pass
 else:
   // PROCEED WITH NORMAL UNMOUNT

@@ -1,0 +1,16 @@
+hpedockerplugin:
+  image: hpe-storage/python-hpedockerplugin:v210
+  container_name: volplugin
+  net: host
+  privileged: true
+  volumes:
+     - /dev:/dev
+     - /run/lock:/run/lock
+     - /var/lib:/var/lib
+     - /var/run/docker/plugins:/var/run/docker/plugins:rw
+     - /etc:/etc
+     - /root/.ssh:/root/.ssh
+     - /sys:/sys
+     - /root/plugin/certs:/root/plugin/certs
+     - /var/run/docker.sock:/var/run/docker.sock
+     - /opt/hpe/data:/opt/hpe/data:shared

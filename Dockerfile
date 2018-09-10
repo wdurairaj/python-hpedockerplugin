@@ -12,6 +12,7 @@ RUN apk add --no-cache --update \
     multipath-tools \
     device-mapper \
     util-linux \
+    open-iscsi \
     sg3_utils\
     eudev \
     libssl1.0 \
@@ -24,7 +25,7 @@ RUN apk add --no-cache --update \
  && rm -rf /var/cache/apk/*
 
 COPY . /python-hpedockerplugin
-COPY ./iscsiadm /usr/bin/
+#COPY ./iscsiadm /usr/bin/
 COPY ./cleanup.sh /usr/bin
 
 
@@ -34,6 +35,7 @@ RUN apk add --virtual /tmp/.temp --no-cache --update \
     gcc \
     libffi-dev \
     linux-headers \
+    open-iscsi \
     make \
     openssl \
 	openssh-client \
@@ -61,8 +63,11 @@ RUN touch /root/.ssh/known_hosts
 RUN chown -R root:root /root/.ssh
 RUN chmod 0600 /root/.ssh/known_hosts
 RUN mkdir -p /opt/hpe/data
-RUN chmod u+x /usr/bin/iscsiadm
+#RUN chmod u+x /usr/bin/iscsiadm
 RUN chmod u+x /usr/bin/cleanup.sh
+
+RUN rm /usr/lib/python2.7/site-packages/os_brick/initiator/connectors/iscsi.pyc
+COPY ./patch_os_bricks/iscsi.py /usr/lib/python2.7/site-packages/os_brick/initiator/connectors
 
 WORKDIR /python-hpedockerplugin
 ENTRYPOINT ["/bin/sh", "-c", "./plugin-start"]

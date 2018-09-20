@@ -17,6 +17,7 @@ RUN apk add --no-cache --update \
     multipath-tools \
     device-mapper \
     util-linux \
+    open-iscsi \
     sg3_utils\
     eudev \
     libssl1.0 \
@@ -29,7 +30,6 @@ RUN apk add --no-cache --update \
  && rm -rf /var/cache/apk/*
 
 COPY . /python-hpedockerplugin
-COPY ./iscsiadm /usr/bin/
 COPY ./cleanup.sh /usr/bin
 
 
@@ -64,10 +64,12 @@ RUN touch /root/.ssh/known_hosts
 RUN chown -R root:root /root/.ssh
 RUN chmod 0600 /root/.ssh/known_hosts
 RUN mkdir -p /opt/hpe/data
-RUN chmod u+x /usr/bin/iscsiadm
 RUN chmod u+x /usr/bin/cleanup.sh
 
+
 # Patch the os_brick, twisted modules
+# Below 2 lines is for fix on Issue #198
+COPY ./patch_os_bricks/iscsi.py /usr/lib/python3.6/site-packages/os_brick-1.13.1-py3.6.egg/os_brick/initiator/connectors/iscsi.py
 
 COPY ./patch_os_bricks/linuxscsi.py /usr/lib/python3.6/site-packages/os_brick-1.13.1-py3.6.egg/os_brick/initiator/linuxscsi.py
 COPY ./patch_os_bricks/rootwrap.py /usr/lib/python3.6/site-packages/os_brick-1.13.1-py3.6.egg/os_brick/privileged/rootwrap.py

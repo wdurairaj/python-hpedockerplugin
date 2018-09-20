@@ -1,7 +1,5 @@
 #!/bin/sh
 
-/sbin/multipathd
-/sbin/udevd &
 
 export PYTHONPATH=${HOME}/python-hpedockerplugin:/root/python-hpedockerplugin:/python-hpedockerplugin:/python-hpedockerplugin/hpedockerplugin
 

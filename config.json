@@ -115,33 +115,6 @@
         "rbind"
       ],
       "Settable": ["source"]
-    },
-    {
-      "Description": "The location of the iscsiadm command.",
-      "Name": "iscsiadm",
-      "Source": "/sbin/iscsiadm",
-      "Destination": "/sbin/ia",
-      "Type": "bind",
-      "Options": ["bind"],
-      "Settable": ["source"]
-    },
-    {
-      "Description": "The location of the loadable kernel modules (specifically iscsi_tcp).",
-      "Name": "lib_modules",
-      "Source": "/lib/modules",
-      "Destination": "/lib/modules",
-      "Type": "bind",
-      "Options": ["bind"],
-      "Settable": ["source"]
-    },
-    {
-      "Description": "The location of the glibc libs. (May need to be changed to /lib/x86_64-linux-gnu)",
-      "Name": "glibc_libs",
-      "Source": "/lib/x86_64-linux-gnu",
-      "Destination": "/lib64",
-      "Type": "bind",
-      "Options": ["rbind"],
-      "Settable": ["source"]
     }
 
   ],

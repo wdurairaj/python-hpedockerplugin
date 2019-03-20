@@ -86,8 +86,6 @@ class VolumePlugin(object):
         LOG.info(_LI('In Plugin Activate'))
         return json.dumps({u"Implements": [u"VolumeDriver"]})
 
-    @on_exception(expo, RateLimitException, max_tries=8)
-    @limits(calls=25, period=30)
     @app.route("/VolumeDriver.Remove", methods=["POST"])
     def volumedriver_remove(self, name):
         """
@@ -102,8 +100,6 @@ class VolumePlugin(object):
 
         return self.orchestrator.volumedriver_remove(volname)
 
-    @on_exception(expo, RateLimitException, max_tries=8)
-    @limits(calls=25, period=30)
     @app.route("/VolumeDriver.Unmount", methods=["POST"])
     def volumedriver_unmount(self, name):
         """
@@ -651,8 +647,6 @@ class VolumePlugin(object):
         LOG.info(' Schedule Name auto generated is %s' % scheduleNameGenerated)
         return scheduleNameGenerated
 
-    @on_exception(expo, RateLimitException, max_tries=8)
-    @limits(calls=25, period=30)
     @app.route("/VolumeDriver.Mount", methods=["POST"])
     def volumedriver_mount(self, name):
         """

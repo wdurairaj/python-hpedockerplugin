@@ -36,9 +36,6 @@ import hpedockerplugin.etcdutil as util
 import threading
 import hpedockerplugin.backend_async_initializer as async_initializer
 from twisted.internet import threads
-from ratelimit import limits
-from ratelimit.exception import RateLimitException
-from backoff import on_exception, expo
 
 LOG = logging.getLogger(__name__)
 
@@ -153,8 +150,6 @@ class Orchestrator(object):
         finally:
             self.volume_backend_lock.release()
 
-    @on_exception(expo, RateLimitException, max_tries=8)
-    @limits(calls=25, period=30)
     def _execute_request_for_backend(self, backend_name, request, volname,
                                      *args, **kwargs):
         LOG.info(' Operating on backend : %s on volume %s '
